@@ -166,13 +166,27 @@ and pre-cools before occupants arrive. Comfort is slightly better too,
 not just cheaper — the worst-zone loop and pre-conditioning keep
 excursions small.
 
-### 30-day episodes (8,640 steps, the real episode length)
+### 30-day episodes (8,640 steps, the real episode length) — run 19 Nov 2026 (1,731.5 s)
 
-Pending — run in progress at the time of writing; results will be added
-to `results/mock_evaluation_30d.json` and this section updated.
+| Policy | Score | Worst scenario | Mean comfort regret | Mean energy (norm) |
+| --- | --- | --- | --- | --- |
+| **policy (ours)** | **0.11549** | 0.27271 | −0.0426 | 0.2322 |
+| pid_water (mock) | 0.19678 | 0.57327 | −0.0495 | 0.4340 |
+| pid (mock) | 0.21145 | 0.57330 | −0.0460 | 0.4707 |
+| fixed_setpoint (mock) | 0.23395 | 0.60531 | −0.0460 | 0.5268 |
+| all_off (mock) | 2.18524 | 7.90231 | −3.6421 | 0.0000 |
 
-Full per-scenario numbers: `results/mock_evaluation_7d.json`
-(and `results/mock_evaluation_30d.json` once the run finishes).
+Same picture as the 7-day run: our policy beat the mock `pid_water` on
+**30/30 scenarios** and in every station (atlanta 0.040 vs 0.044, denver
+0.074 vs 0.092, fairbanks 0.120 vs 0.157, phoenix 0.157 vs 0.381,
+singapore 0.187 vs 0.310). One honest wrinkle: on 3/6 mock Singapore
+scenarios the policy loses to `all_off` — in a mild hot-humid climate
+the mock's energy scale makes doing nothing nearly competitive. The real
+simulator's energy scale differs, so this is a flag to watch in
+leaderboard feedback, not something to tune against the mock.
+
+Full per-scenario numbers: `results/mock_evaluation_7d.json` and
+`results/mock_evaluation_30d.json`.
 
 **These are mock numbers.** They rank policies against each other on the
 same mock only. They are NOT comparable to the real leaderboard or to the

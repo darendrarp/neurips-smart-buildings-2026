@@ -122,23 +122,28 @@ python build_notebook.py
 Leaderboard-style score = mean over scenarios of |mean per-step reward|,
 lower is better. **Mock only — not comparable to the real leaderboard.**
 
-<!-- MOCK_RESULTS: 7-day run 19 Nov 2026, 229.7 s; 30-day run pending -->
+<!-- MOCK_RESULTS: 7-day run 19 Nov 2026 (229.7 s); 30-day run 19 Nov 2026 (1731.5 s) -->
 
-| Policy | 7-day mock score (30 scenarios) | 30-day mock score |
+| Policy | 7-day mock score (30 scenarios) | 30-day mock score (30 scenarios) |
 | --- | --- | --- |
-| **policy (ours)** | **0.10886** (worst 0.27966) | _pending_ |
-| pid_water (mock) | 0.19277 (worst 0.55523) | _pending_ |
-| pid (mock) | 0.20770 (worst 0.55563) | _pending_ |
-| fixed_setpoint (mock) | 0.23065 (worst 0.58830) | _pending_ |
+| **policy (ours)** | **0.10886** (worst 0.27966) | **0.11549** (worst 0.27271) |
+| pid_water (mock) | 0.19277 (worst 0.55523) | 0.19678 (worst 0.57327) |
+| pid (mock) | 0.20770 (worst 0.55563) | 0.21145 (worst 0.57330) |
+| fixed_setpoint (mock) | 0.23065 (worst 0.58830) | 0.23395 (worst 0.60531) |
 | bang_bang (mock) | n/a (not re-implemented) | n/a |
-| all_off (mock) | 2.12752 (worst 9.29309) | _pending_ |
+| all_off (mock) | 2.12752 (worst 9.29309) | 2.18524 (worst 7.90231) |
 
-Our policy beat the mock `pid_water` on **30/30 scenarios** and in every
-station (atlanta 0.040 vs 0.045, denver 0.074 vs 0.093, fairbanks 0.121
-vs 0.158, phoenix 0.137 vs 0.368, singapore 0.173 vs 0.302). The win comes
-mostly from energy (mean normalized energy 0.216 vs 0.425 — the
-unoccupied-night shutdown) with slightly better comfort too (mean regret
-−0.0415 vs −0.0483).
+Our policy beat the mock `pid_water` on **30/30 scenarios** at both
+episode lengths and in every station (30-day: atlanta 0.040 vs 0.044,
+denver 0.074 vs 0.092, fairbanks 0.120 vs 0.157, phoenix 0.157 vs 0.381,
+singapore 0.187 vs 0.310). The win comes mostly from energy (30-day mean
+normalized energy 0.232 vs 0.434 — the unoccupied-night shutdown) with
+slightly better comfort too (mean regret −0.0426 vs −0.0495). One honest
+wrinkle: on 3/6 mock Singapore scenarios the policy loses to `all_off`
+in the mock — in a mild hot-humid climate the mock's energy scale makes
+doing nothing nearly competitive; the real simulator's energy scale
+differs, so this is a flag for leaderboard feedback, not a tuning
+target.
 
 Reference — shipped baselines on the REAL training set (computed from the
 starter kit's `baseline_returns.json`, 30 scenarios × 8,640 steps):
